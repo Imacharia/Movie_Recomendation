@@ -45,6 +45,13 @@ class DatasetInfo:
             for genre in genres_list:
                 result.append(genre['name'])
         return result
+    
+    @staticmethod
+    def get_keywords(text):
+        result = []
+        for item in ast.literal_eval(text):
+            result.append(item['name'])
+        return result
 
     @staticmethod
     def convert3(obj):
