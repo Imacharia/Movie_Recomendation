@@ -80,6 +80,7 @@ class DatasetInfo:
             if i['job'] == 'Director':
                 result.append(i['name'])
         return result
+    
     @staticmethod
     def get_keywords(text):
         result = []
