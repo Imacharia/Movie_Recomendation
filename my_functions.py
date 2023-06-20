@@ -38,7 +38,6 @@ class DatasetInfo:
             return "Invalid dataset type. Please provide a Pandas DataFrame."
             
     @staticmethod
- 
     def convert(self):
         result = []
         if isinstance(self, str):
@@ -46,9 +45,6 @@ class DatasetInfo:
             for genre in genres_list:
                 result.append(genre['name'])
         return result
-
-
-    
 
     @staticmethod
     def convert3(obj):
