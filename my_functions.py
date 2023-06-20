@@ -63,7 +63,7 @@ class DatasetInfo:
         result = []
         count = 0
         for i in ast.literal_eval(obj):
-            if count != 3:
+            if count != 5:
                 result.append(i['name'])
                 count += 1
             else:
@@ -80,6 +80,15 @@ class DatasetInfo:
             if i['job'] == 'Director':
                 result.append(i['name'])
         return result
+    @staticmethod
+    def get_keywords(text):
+        result = []
+        for item in ast.literal_eval(text):
+            result.append(item['name'])
+        return result
+	
+
+
 	
 # Calculate score for each qualified movie
 def movie_score(x):
