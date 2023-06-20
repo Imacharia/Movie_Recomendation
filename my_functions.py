@@ -56,18 +56,8 @@ class DatasetInfo:
                 result.append(genre['name'])
         return result
     
-<<<<<<< HEAD
-    @staticmethod
-    def get_keywords(text):
-        result = []
-        for item in ast.literal_eval(text):
-            result.append(item['name'])
-        return result
-
-=======
 #This is another static method that takes an object as input and converts it into a list of names. It assumes that the input object is a string representation of a list of dictionaries.
 #It iterates over the dictionaries and extracts the names, limiting the result to the first three names encountered.
->>>>>>> c1bb43a966b4cf0f71931d4c2a7d80402956acdb
     @staticmethod
     def convert3(obj):
         result = []
