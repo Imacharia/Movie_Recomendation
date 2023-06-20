@@ -14,29 +14,39 @@ from sklearn.metrics.pairwise import cosine_similarity
 from surprise import SVD, Reader, Dataset 
 from surprise.model_selection import cross_validate
 
-
+# This code defines a class called DatasetInfo that provides several methods for analyzing and processing datasets. 
+# Let's go through the different methods:
 class DatasetInfo:
+    # This is the constructor method that initializes the class instance with a dataset.
     def __init__(self, dataset):
         self.dataset = dataset
 
+    # This method checks if the dataset is a Pandas DataFrame and
+    # returns the information about the dataset using the info() method of the DataFrame.
     def check_dataset_info(self):
         if isinstance(self.dataset, pd.DataFrame):
             return self.dataset.info()
         else:
             return "Invalid dataset type. Please provide a Pandas DataFrame."
 
+    # This method checks if the dataset is either a NumPy array or a Pandas DataFrame and 
+    # prints the shape of the dataset using the shape attribute.
     def check_dataset_shape(self):
         if isinstance(self.dataset, (np.ndarray, pd.DataFrame)):
             print("Dataset shape:", self.dataset.shape)
         else:
             print("Invalid dataset type. Please provide a NumPy array or a Pandas DataFrame.")
 
+    #This method checks if the dataset is a Pandas DataFrame and 
+    # returns the descriptive statistics of the dataset using the describe() method of the DataFrame.
     def get_dataset_statistics_describe(self):
         if isinstance(self.dataset, pd.DataFrame):
             return self.dataset.describe()
         else:
             return "Invalid dataset type. Please provide a Pandas DataFrame."
-            
+
+    # This is a static method that takes a string as input and converts it into a list of genres.
+    # It assumes that the input string is in JSON format and extracts the genre names from the JSON objects.       
     @staticmethod
     def convert(self):
         result = []
@@ -45,19 +55,24 @@ class DatasetInfo:
             for genre in genres_list:
                 result.append(genre['name'])
         return result
-
+    
+#This is another static method that takes an object as input and converts it into a list of names. It assumes that the input object is a string representation of a list of dictionaries.
+#It iterates over the dictionaries and extracts the names, limiting the result to the first three names encountered.
     @staticmethod
     def convert3(obj):
         result = []
         count = 0
         for i in ast.literal_eval(obj):
-            if count != 3:
+            if count != 5:
                 result.append(i['name'])
                 count += 1
             else:
                 break
         return result
 
+# This is also a static method that takes a string as input and returns a list of directors' names. 
+# It assumes that the input string is a string representation of a list of dictionaries. 
+# It iterates over the dictionaries and extracts the names of directors based on the 'job' key being set to 'Director'.
     @staticmethod
     def get_directors(text):
         result = []
@@ -65,6 +80,15 @@ class DatasetInfo:
             if i['job'] == 'Director':
                 result.append(i['name'])
         return result
+    @staticmethod
+    def get_keywords(text):
+        result = []
+        for item in ast.literal_eval(text):
+            result.append(item['name'])
+        return result
+	
+
+
 	
 # Calculate score for each qualified movie
 def movie_score(x):
