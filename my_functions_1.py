@@ -1,30 +1,19 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-%matplotlib inline
+
 import seaborn as sns
 
-import ast 
+import ast
+import json
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import linear_kernel
-from sklearn.feature_extraction.text import CountVectorizer
+
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.metrics import PrecisionRecallDisplay, mean_squared_error, precision_recall_fscore_support, precision_recall_curve
-from sklearn.pipeline import Pipeline
-
 from surprise import SVD, Reader, Dataset 
-from surprise.model_selection import cross_validate, train_test_split, GridSearchCV
-from surprise import KNNWithMeans
-from surprise import accuracy
+from surprise.model_selection import cross_validate
 
-<<<<<<< HEAD
-
-import warnings
-warnings.filterwarnings('ignore', category=UserWarning, module='IPython')
-
-=======
->>>>>>> 8621445f04d35972ccc29aeef5e250ab527720fc
 # This code defines a class called DatasetInfo that provides several methods for analyzing and processing datasets. 
 # Let's go through the different methods:
 class DatasetInfo:
@@ -67,8 +56,18 @@ class DatasetInfo:
                 result.append(genre['name'])
         return result
     
+<<<<<<< HEAD
+    @staticmethod
+    def get_keywords(text):
+        result = []
+        for item in ast.literal_eval(text):
+            result.append(item['name'])
+        return result
+
+=======
 #This is another static method that takes an object as input and converts it into a list of names. It assumes that the input object is a string representation of a list of dictionaries.
 #It iterates over the dictionaries and extracts the names, limiting the result to the first three names encountered.
+>>>>>>> c1bb43a966b4cf0f71931d4c2a7d80402956acdb
     @staticmethod
     def convert3(obj):
         result = []
@@ -98,12 +97,9 @@ class DatasetInfo:
         for item in ast.literal_eval(text):
             result.append(item['name'])
         return result
-<<<<<<< HEAD
-=======
 	
 
 
->>>>>>> 8621445f04d35972ccc29aeef5e250ab527720fc
 	
 # Calculate score for each qualified movie
 def movie_score(x):
@@ -135,33 +131,3 @@ def get_user_recommendations(user_Id, user_item_matrix, similarity_matrix, movie
     recommendations = movies_credits.loc[top_movies.index]
 
     return recommendations
-
-
-def recommended_movies(title, cosine_sim):
-    
-    # Get the index of the movie that matches the title
-    idx = indices[title]
-    
-    # Get the pairwsie similarity scores of all movies with that movie
-    sim_scores = list(enumerate(cosine_sim[idx]))
-    
-    # Sort the movies based on the similarity scores
-    sim_scores.sort(key=lambda x: x[1], reverse=True)
-
-    # Get the scores of the 10 most similar movies
-    sim_scores=sim_scores[1:11]
-    
-    # Get the movie indices
-    ind=[]
-    for (x,y) in sim_scores:
-        ind.append(x)
-        
-    # Return the top 10 most similar movies
-    tit=[]
-    for x in ind:
-        tit.append(movies_credits.iloc[x]['title'])
-<<<<<<< HEAD
-    return pd.Series(data=tit, index=ind)
-=======
-    return pd.Series(data=tit, index=ind)
->>>>>>> 8621445f04d35972ccc29aeef5e250ab527720fc
