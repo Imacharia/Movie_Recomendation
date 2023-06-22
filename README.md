@@ -1,4 +1,4 @@
-# Movie_Recomendation
+# **Movie_Recommendation_System**
 ![Movies](https://i.pinimg.com/564x/dc/79/4e/dc794eef263341f6f0afad8b78693b5a.jpg)
 
 # Business Understanding
