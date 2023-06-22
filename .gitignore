@@ -162,15 +162,15 @@ cython_debug/
 # files
 .similarity.pkl
 .cosine_sim2.pkl
-.Movie Recommendation_2
+.Movie_Recommendation_2.ipynb
 .indices.pkl
 .similarity (2).pkl
-.Movie Recommendation final 1
-.Movie Recommendation final 2
-.Movie Recommendation final
-.Movie Recommendation
+.Movie_Recommendation_final_1.ipynb
+.Movie_Recommendation_final_2.ipynb
+.Movie_Recommendation_final.ipynb
+.Movie_Recommendation.ipynb
 .my_functions.py_1
 .dash
-.recomendation
-.movv
-.movv_1
+.recomendation.py
+.movv.ipynb
+.movv_1.ipynb
