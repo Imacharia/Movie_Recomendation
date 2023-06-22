@@ -98,11 +98,15 @@ This model allows for coincidental recommendations; that is, it can recommend an
 Here, we build a simple hybrid recommender that brings together techniques we have implemented in the content-based and collaborative filter based engines.
 
 ## Conclusion
-* The top 5 most popular movies according to our first model are Minions, Interstellar, Deadpool, Guardians of the Galaxy, and Mad Max: Fury Road.
-* The top 10 movies based on their weighted ratings according to our first model are The Shawshank Redemption, Fight Club , Pulp Fiction , The Godfather , The Dark Knight , Inception , Forrest Gump , Interstellar , The Empire Strikes Back , Schindler's List. 
+- The top 5 most popular movies according to our first model are Minions, Interstellar, Deadpool, Guardians of the Galaxy, and Mad Max: Fury Road.
+- The top 10 movies based on their weighted ratings according to our first model are The Shawshank Redemption, Fight Club , Pulp Fiction , The Godfather , The Dark Knight , Inception , Forrest Gump , Interstellar , The Empire Strikes Back , Schindler's List.
 
 ## Recommendations
-- 
+- Real-time Updates: Incorporate a mechanism to continuously update the movie database with the latest releases, ratings, and reviews. This will ensure that the recommendation system remains up-to-date and can provide users with the most relevant movie suggestions.
+- Contextual Factors: Consider contextual factors such as time of day, location, mood, and social trends to provide personalized recommendations that align with the user's current situation and preferences.
+- User Feedback and Improvement Loop: Implement a feedback mechanism that allows users to rate and provide feedback on recommended movies. Utilize this feedback to continuously improve the recommendation algorithms and enhance the accuracy and relevance of future recommendations.
 
 ## Next Steps
-- 
+- System Design and Implementation: Design and develop a scalable and robust recommendation system architecture that can handle a large volume of users and movies. Implement the recommendation algorithms, user profiling mechanisms, and real-time updates to create a functional prototype.
+- Evaluation and Validation: Conduct extensive testing and evaluation of the recommendation system using real-world scenarios and user feedback. Measure the system's performance in terms of recommendation accuracy, relevance, and user satisfaction to identify areas for improvement.
+- Iterative Refinement: Continuously iterate and refine the recommendation system based on user feedback and performance evaluation results. Incorporate new features, optimize algorithms, and enhance the user interface to provide an exceptional movie recommendation experience.
