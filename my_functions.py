@@ -4,15 +4,26 @@ import matplotlib.pyplot as plt
 
 import seaborn as sns
 
-import ast
+import ast 
 import json
+from collections.abc import Iterable
 
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
-
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics import PrecisionRecallDisplay, mean_squared_error, precision_recall_fscore_support, precision_recall_curve
+from sklearn.pipeline import Pipeline
+
+from wordcloud import WordCloud
+
 from surprise import SVD, Reader, Dataset 
-from surprise.model_selection import cross_validate
+from surprise.model_selection import cross_validate, train_test_split, GridSearchCV
+from surprise import KNNWithMeans
+from surprise import accuracy
+
+from nltk import PorterStemmer
+
 
 # This code defines a class called DatasetInfo that provides several methods for analyzing and processing datasets. 
 # Let's go through the different methods:
@@ -87,10 +98,100 @@ class DatasetInfo:
         for item in ast.literal_eval(text):
             result.append(item['name'])
         return result
-	
 
 
-	
+
+def recommended_movies(title, cosine_sim, movies_data):
+    
+    indices = {title: index for index, title in enumerate(movies_data['title'])}
+    
+    # Get the index of the movie that matches the title
+    idx = indices[title]
+    
+    # Get the pairwsie similarity scores of all movies with that movie
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    
+    # Sort the movies based on the similarity scores
+    sim_scores.sort(key=lambda x: x[1], reverse=True)
+
+    # Get the scores of the 10 most similar movies
+    sim_scores=sim_scores[1:11]
+    
+    # Get the movie indices
+    ind=[]
+    for (x,y) in sim_scores:
+        ind.append(x)
+        
+    # Return the top 10 most similar movies
+    tit=[]
+    for x in ind:
+        tit.append(movies_credits.iloc[x]['title'])
+    return pd.Series(data=tit, index=ind)
+
+
+
+def recommend_movies(title, cosine_sim, movies_data):
+    # Create a dictionary to map movie titles to their indices
+    indices = {title: index for index, title in enumerate(movies_data['title'])}
+
+    # Get the index of the movie that matches the title
+    idx = indices[title]
+
+    # Get the pairwise similarity scores of all movies with that movie
+    sim_scores = list(enumerate(cosine_sim[idx]))
+
+    # Sort the movies based on the similarity scores
+    sim_scores.sort(key=lambda x: x[1], reverse=True)
+
+    # Get the scores of the 10 most similar movies
+    sim_scores = sim_scores[1:11]
+
+    # Get the movie indices
+    indices = [x for x, _ in sim_scores]
+
+    # Return the top 10 most similar movies
+    recommended_movies = movies_data.iloc[indices]['title']
+    return recommended_movies
+
+
+
+class DataFrameFiller:
+    def __init__(self, df):
+        self.df = df
+
+    def fillna_random(self, columns):
+        """Fill missing values in specified columns with random entries from the same columns."""
+        for column in columns:
+            # Get the non-null values from the column
+            non_null_values = self.df.loc[self.df[column].notnull(), column]
+
+            # Count the number of missing values in the column
+            missing_count = self.df[column].isnull().sum()
+
+            # Generate random values with the same length as missing values
+            random_values = np.random.choice(non_null_values.values, size=missing_count, replace=True)
+
+            # Assign the random values to the missing values in the column
+            self.df.loc[self.df[column].isnull(), column] = random_values
+
+        return self.df
+
+
+
+def update_crew_with_director(data):
+    # Create a new column called 'Directors' and assign the values of the 'crew' column to it
+    data['Directors'] = data['crew']
+    
+    # Return the updated DataFrame
+    return data
+
+
+
+def create_soup(x):
+    return ' '.join(x['keywords']) + ' ' + ' '.join(x['Directors']) + ' ' + ' '.join(x['genres'])
+
+
+
 # Calculate score for each qualified movie
 def movie_score(x):
     v=x['vote_count']
@@ -98,6 +199,9 @@ def movie_score(x):
     R=x['vote_average']
     C=movies_credits['vote_average'].mean()
     return ((R*v)/(v+m))+((C*m)/(v+m))
+
+
+
 
 #Define a function to get movie recommendations for a user
 def get_user_recommendations(user_Id, user_item_matrix, similarity_matrix, movies_credits, top_n=10):
@@ -123,7 +227,11 @@ def get_user_recommendations(user_Id, user_item_matrix, similarity_matrix, movie
     return recommendations
 
 
-def recommended_movies(title, cosine_sim):
+
+
+def recommended_movies(title, cosine_sim, movies_data):
+    
+    indices = {title: index for index, title in enumerate(movies_data['title'])}
     
     # Get the index of the movie that matches the title
     idx = indices[title]
@@ -147,3 +255,65 @@ def recommended_movies(title, cosine_sim):
     for x in ind:
         tit.append(movies_credits.iloc[x]['title'])
     return pd.Series(data=tit, index=ind)
+
+
+ps = PorterStemmer()
+def stem(text):
+    y=[]
+    for i in text.split():
+        y.append(ps.stem(i))
+    return" ".join(y)
+
+
+
+def recommend(movie, new_movies, simliarity):
+    movie_index = new_movies[new_movies["title"]==movie].index[0]
+    distances = similarity[movie_index]
+    movies_list = sorted(list(enumerate(distances)), reverse = True, key = lambda x:x[1])[1:7]
+
+    for i in movies_list:
+        print(new_movies.iloc[i[0]].title)
+        
+
+
+
+# Function that takes in movie title as input and outputs most similar movies
+def hybrid_recommendations(userId, title):
+    
+    indices = {title: index for index, title in enumerate(movies_data['title'])}
+    # Get the index of the movie that matches the title
+    idx = indices[title]
+    
+    # Get the pairwsie similarity scores of all movies with that movie
+    sim_scores = list(enumerate(cosine_sim2[idx]))
+    
+    # Sort the movies based on the similarity scores
+    sim_scores.sort(key=lambda x: x[1], reverse=True)
+
+    # Get the scores of the 10 most similar movies
+    sim_scores=sim_scores[1:11]
+    
+    # Get the movie indices
+    ind=[]
+    for (x,y) in sim_scores:
+        ind.append(x)
+        
+    # Grab the title,movieid,vote_average and vote_count of the top 10 most similar movies
+    tit=[]
+    movieid=[]
+    vote_average=[]
+    vote_count=[]
+    for x in ind:
+        tit.append(movies_credits.iloc[x]['title'])
+        movieid.append(movies_credits.iloc[x]['movieId'])
+        vote_average.append(movies_credits.iloc[x]['vote_average'])
+        vote_count.append(movies_credits.iloc[x]['vote_count'])
+
+        
+    # Predict the ratings a user might give to these top 10 most similar movies
+    est_rating=[]
+    for a in movieid:
+        est_rating.append(svd.predict(userId, a, r_ui=None).est)  
+        
+    return pd.DataFrame({'index': ind, 'title':tit, 'movieId':movieid, 'vote_average':vote_average, 'vote_count':vote_count,'estimated_rating':est_rating}).set_index('index').sort_values(by='estimated_rating', ascending=False)
+
