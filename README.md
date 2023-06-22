@@ -98,8 +98,7 @@ This model allows for coincidental recommendations; that is, it can recommend an
 Here, we build a simple hybrid recommender that brings together techniques we have implemented in the content-based and collaborative filter based engines.
 
 ## Conclusion
-- The top 5 most popular movies according to our first model are Minions, Interstellar, Deadpool, Guardians of the Galaxy, and Mad Max: Fury Road.
-- The top 10 movies based on their weighted ratings according to our first model are The Shawshank Redemption, Fight Club , Pulp Fiction , The Godfather , The Dark Knight , Inception , Forrest Gump , Interstellar , The Empire Strikes Back , Schindler's List.
+In conclusion, the recommendation system serves as a valuable tool in the movie industry to address the challenge of content navigation and provide personalized movie recommendations. By understanding user preferences, leveraging similarities between users, and utilizing movie features, the system aims to enhance the user experience, increase engagement, and ultimately contribute to user retention on the platform.
 
 ## Recommendations
 - Real-time Updates: Incorporate a mechanism to continuously update the movie database with the latest releases, ratings, and reviews. This will ensure that the recommendation system remains up-to-date and can provide users with the most relevant movie suggestions.
